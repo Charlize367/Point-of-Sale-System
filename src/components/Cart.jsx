@@ -36,7 +36,7 @@ console.log(skus);
           const product = products.find(p => p.productId === item.productId);
           if (!product) return null;
           return (
-            <button className="hover:bg-gray-200 active:bg-gray-300">
+            <button className="hover:bg-gray-200 cursor-pointer active:bg-gray-300">
             <li key={item.productId} className="flex justify-between py-1">
   <div className="flex flex-col">
     <span className="font-medium">{product.productName}</span>
@@ -175,7 +175,7 @@ console.log(skus);
       
       return updated;
     });
-  }}  className="text-white m-1 bg-black box-border border border-transparent hover:bg-dark-strong focus:ring-4 focus:warning-subtle shadow-xs font-medium leading-5 rounded-full text-sm px-3 py-2.5 focus:outline-none">+</button>
+  }}  className="text-white m-1 bg-black box-border cursor-pointer border border-transparent hover:bg-dark-strong focus:ring-4 focus:warning-subtle shadow-xs font-medium leading-5 rounded-full text-sm px-3 py-2.5 focus:outline-none">+</button>
                 <input type="number" min="1"   value={p.saleItemQuantity} id="Line1Qty" className="h-8 w-10 rounded-sm border-gray-200 bg-gray-100 p-0 text-center text-sm text-gray-600 [-moz-appearance:_textfield] focus:outline-hidden [&amp;::-webkit-inner-spin-button]:m-0 [&amp;::-webkit-inner-spin-button]:appearance-none [&amp;::-webkit-outer-spin-button]:m-0 [&amp;::-webkit-outer-spin-button]:appearance-none" />
                 <button type="button" onClick={(e) => {
     e.stopPropagation();
@@ -187,7 +187,7 @@ console.log(skus);
       };
       return updated;
     });
-  }} className="text-white m-1 bg-black box-border border border-transparent hover:bg-dark-strong focus:ring-4 focus:warning-subtle shadow-xs font-medium leading-5 rounded-full text-sm px-3 py-2.5 focus:outline-none">-</button>
+  }} className="text-white m-1 bg-black cursor-pointer box-border border border-transparent hover:bg-dark-strong focus:ring-4 focus:warning-subtle shadow-xs font-medium leading-5 rounded-full text-sm px-3 py-2.5 focus:outline-none">-</button>
                            
                         </form>
 
@@ -201,7 +201,7 @@ console.log(skus);
                                 return [...prev, { productId: p.productId,  saleItemQuantity: 1, variationOptions: exists.variationOptions ?? []}];
                             }
                             });
-                        }} className="text-gray-600 transition hover:text-red-600">
+                        }} className="text-gray-600 transition cursor-pointer hover:text-red-600">
                 <span className="sr-only">Remove item</span>
 
                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth="1.5" stroke="currentColor" className="size-4">
@@ -236,7 +236,7 @@ console.log(skus);
             
 
             <div className="flex justify-end">
-              <button onClick={checkoutItems} className="block rounded-sm bg-gray-700 px-5 py-3 text-sm text-gray-100 transition hover:bg-gray-600">
+              <button onClick={checkoutItems} className="block cursor-pointer rounded-sm bg-gray-700 px-5 py-3 text-sm text-gray-100 transition hover:bg-gray-600">
                 Checkout
               </button>
               

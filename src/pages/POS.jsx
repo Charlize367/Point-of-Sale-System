@@ -362,7 +362,7 @@ const getSku = async () => {
                                 setCategoryId(c.categoryId);
                             }
                             }} className={
-                                    `flex-shrink-0 m-3 px-10 py-4 text-white rounded-4xl font-medium text-m 
+                                    `flex-shrink-0 m-3 cursor-pointer px-10 py-4 text-white rounded-4xl font-medium text-m 
                                     bg-gradient-to-r from-black via-gray-800 to-black hover:bg-gradient-to-br 
                                     transition-all duration-200
 
@@ -381,7 +381,7 @@ const getSku = async () => {
                         
                         const isDisabled = p.productStock === 0;
                         return(
-                        <button onClick={() => {
+                        <button className="cursor-pointer" onClick={() => {
                             if (isDisabled) return;
 
                             
@@ -488,7 +488,7 @@ const getSku = async () => {
                     <button
                     onClick={() => { setShowPopup(false); getProducts(); getCategories();}}
                     disabled={retryTime > 0}
-                    className={`text-white inline-flex items-center bg-gray-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 mt-4 text-center ${
+                    className={`text-white inline-flex cursor-pointer items-center bg-gray-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 mt-4 text-center ${
                         retryTime > 0 ? "opacity-50 cursor-not-allowed" : ""
                     }`}
                     >
@@ -502,7 +502,7 @@ const getSku = async () => {
         
         <>
         <div className="fixed inset-0 bg-black/40"></div>
-        <div className="fixed bottom-0 left-0 right-0 bg-white p-4 h-100 rounded-t-2xl shadow-lg"> <button type="button" onClick={() => closeAndClearForm(product?.productId)} className="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm w-8 h-8 ms-auto inline-flex justify-center items-center dark:hover:bg-gray-600 dark:hover:text-white" data-modal-toggle="crud-modal">
+        <div className="fixed bottom-0 left-0 right-0 bg-white p-4 h-100 rounded-t-2xl shadow-lg"> <button type="button" onClick={() => closeAndClearForm(product?.productId)} className="text-gray-400 bg-transparent cursor-pointer hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm w-8 h-8 ms-auto inline-flex justify-center items-center dark:hover:bg-gray-600 dark:hover:text-white" data-modal-toggle="crud-modal">
             <svg className="w-3 h-3" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 14">
                 <path stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="m1 1 6 6m0 0 6 6M7 7l6-6M7 7l-6 6"/>
             </svg>
@@ -527,7 +527,7 @@ const getSku = async () => {
                         </select>
                         </div>
                 )}
-            <button type="submit" onClick={closeModal} className="text-white inline-flex items-center bg-gray-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 mt-4 text-center">
+            <button type="submit" onClick={closeModal} className="text-white cursor-pointer inline-flex items-center bg-gray-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 mt-4 text-center">
                          <svg className="me-1 -ms-1 w-5 h-5" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fillRule="evenodd" d="M10 5a1 1 0 011 1v3h3a1 1 0 110 2h-3v3a1 1 0 11-2 0v-3H6a1 1 0 110-2h3V6a1 1 0 011-1z" clipRule="evenodd"></path></svg>
                 Save variation
             </button>
