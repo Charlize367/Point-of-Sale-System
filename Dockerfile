@@ -1,4 +1,4 @@
-FROM node:alpine3.18 as build
+FROM node:alpine3.18 AS build
 
 ARG VITE_API_URL
 ARG VITE_API_BASE_URL
