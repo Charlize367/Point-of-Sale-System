@@ -1,0 +1,23 @@
+@import "tailwindcss";
+
+.scrollbar-hide::-webkit-scrollbar {
+  display: none;
+}
+.scrollbar-hide {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+.printable {
+  position: absolute;
+  left: -9999px;  /* Move off-screen */
+  visibility: hidden;  /* Hide visually */
+}
+@media print {
+  .printable {
+    position: static;  /* Reset position for print */
+    visibility: visible;  /* Show in print */
+    background: white;
+    color: black;
+  }
+}

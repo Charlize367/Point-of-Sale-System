@@ -1,0 +1,31 @@
+DISABLE UNAVAILABLE VARIATION
+
+what i need for my data: sku variation options
+what will i do with that data: check if those variation options combo for the sku is = 0
+
+COMPARE with
+
+what i need for my data: selected variation option (loop it and go over it in case there are more than 2 options)
+what else do i need: the variation option that is being checked at the moment
+what will i do: combine all 3 and find the matching variation options from above and check if stock is 0
+
+if stock is 0, DISABLE
+
+
+
+PROBLEMS:
+
+- initial variations that don't exist at all are not blocked
+
+
+
+
+
+FOR STOCK QUANTITY SELECTOR:
+
+
+what i need to do: disable stock quantity until the variation options selected have the same length as variation groups
+once variation is picked and saved, we need to get the SKU with the product id and variation options, then thats when we can determine the stock
+quantity limit you can add.
+
+what should be created: a helper function that disables the selector if variation options is < 0.
