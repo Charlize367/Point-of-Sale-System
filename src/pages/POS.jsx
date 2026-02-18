@@ -32,9 +32,13 @@ const POS = () => {
     const [skus, setSkus] = useState([]);
     const bucket = import.meta.env.VITE_S3_BUCKET;
     const region = import.meta.env.VITE_AWS_REGION;
-
+    const [variationSaved, setVariationSaved] = useState(false);
+   
     const openModal = (itemId, productId) => {
         setShowModal(true);
+
+        
+    
         setItemId(itemId);
         setProductId(productId)
     }
@@ -231,6 +235,8 @@ const getSku = async () => {
       
     }, [categoryId, searchTerm]);
 
+    
+
     useEffect(() => {
     if (retryTime > 0) {
          const timer = setInterval(() => setRetryTime((prev) => prev - 1), 1000);
@@ -274,6 +280,7 @@ const getSku = async () => {
             handlePrint();
             setSelectedItems([]);
             getProducts();
+            setVariationSaved(false);
 
         } catch (error) {
             console.log(error);
@@ -286,32 +293,18 @@ const getSku = async () => {
     }
 
 
-
-
-
-      const closeAndClearForm = (productId) => {
-          closeModal();
-
-          setSelectedItems(prev =>
-            prev.map(item => 
-                item.productId === productId
-                ? {...item, variationOptions: []}
-                : item
-            )
-          )
-         
-      }
-
-      const product = products.find((p) => p.productId === productId);
-
-    const disableOption = (itemId, variationOption, variationId, product) => {
+const product = products.find((p) => p.productId === productId);
+      
+console.log(product);
+      
+    const disableOption = (itemId, variationOption, variationId, variations) => {
         const newOption = {
   ...variationOption,  
   variationId: variationId,  
 };
 
         const item = selectedItems[itemId];
-        const currentSelections = item?.variationOptions || [];
+        const currentSelections = item.variationOptions || [];
         if (currentSelections.length === 0) {
             const hasStockForOption = skus.some(sku => 
                 sku.product.productId === product.productId &&
@@ -322,23 +315,50 @@ const getSku = async () => {
 
             return !hasStockForOption;
         } 
-        const hypotheticalCombo = [...currentSelections.filter(opt => !opt.variationId || opt.variationId !== variationId), newOption];
+        const hypotheticalCombo = [...currentSelections.filter(opt =>  opt.variationId !== variationId), newOption];
         
        
+    
+
         const matchingSkuCombo = skus.find(sku => 
-            sku.product.productId === product.productId &&
-            sku.variationOptions.length === hypotheticalCombo.length &&
-            sku.variationOptions.every((skuOpt, index) => 
-        skuOpt.variationOptionId === hypotheticalCombo[index].variationOptionId && skuOpt.variationId === hypotheticalCombo[index].variationId 
+    sku.product.productId === product.productId &&
+    sku.variationOptions.length === hypotheticalCombo.length &&
+    sku.variationOptions.every(skuOpt => 
+        hypotheticalCombo.some(h => 
+            h.variationId === skuOpt.variationId &&
+            h.variationOptionId === skuOpt.variationOptionId
+        )
     )
-        );
+);
         console.log(matchingSkuCombo)
         
         if (matchingSkuCombo?.stockQuantity === 0) return true;
 
         
         return false;
+    
     }
+
+
+    const closeAndClearForm = (productId) => {
+          closeModal();
+
+        
+          setSelectedItems(prev =>
+            prev.map(item => 
+                item.productId === productId
+                ? {...item, variationOptions: []}
+                : item
+            )
+          )
+
+          setVariationSaved(false);
+       
+         
+      }
+
+   
+   
 
   return (
     <div className="grid grid-cols-1 gap-0">
@@ -522,12 +542,12 @@ const getSku = async () => {
                  }} className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5 " required>
                         <option value="" className="text-gray-50">Select variation</option>
                         {v.variationOptions.map(o => ( 
-                        <option key={o.variationOptionId} value={o.variationOptionId} disabled={disableOption(itemId, o, v.variationId, product)} className={`variation-button ${disableOption(itemId, o, v.variationId, product) ? 'disabled' : ''}`}>{o.variationOptionName}</option>
+                        <option key={o.variationOptionId} value={o.variationOptionId} disabled={disableOption(itemId, o, v.variationId, product?.variations)} className={`variation-button ${disableOption(itemId, o, v.variationId, product?.variations) ? 'disabled' : ''}`}>{o.variationOptionName}</option>
                             ))} 
                         </select>
                         </div>
                 )}
-            <button type="submit" onClick={closeModal} className="text-white cursor-pointer inline-flex items-center bg-gray-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 mt-4 text-center">
+            <button type="submit" onClick={() => {closeModal(); setVariationSaved(true); }}className="text-white cursor-pointer inline-flex items-center bg-gray-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 mt-4 text-center">
                          <svg className="me-1 -ms-1 w-5 h-5" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fillRule="evenodd" d="M10 5a1 1 0 011 1v3h3a1 1 0 110 2h-3v3a1 1 0 11-2 0v-3H6a1 1 0 110-2h3V6a1 1 0 011-1z" clipRule="evenodd"></path></svg>
                 Save variation
             </button>

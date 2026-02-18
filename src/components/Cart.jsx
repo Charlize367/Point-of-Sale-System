@@ -22,8 +22,9 @@ const Cart = forwardRef(({ itemId, selected, setSelectedItems, checkoutItems, pr
 
 console.log(skus);
 
+console.log(selected);
 
-
+const item = selected.map(item => console.log(item.variationOptions));
   
 
   return (
@@ -89,7 +90,7 @@ console.log(skus);
         <div className="p-3">
             
           <li className="flex items-center gap-4">
-            <img src={`https://${bucket}.s3.${region}.amazonaws.com/${product.productImage}`} alt="" className="size-16 rounded-sm object-cover" />
+            <img src={`https://${bucket}.s3.${region}.amazonaws.com/${product?.productImage}`} alt="" className="size-16 rounded-sm object-cover" />
 
           
             <div >
@@ -141,7 +142,7 @@ console.log(skus);
               <form>
                 
                 <label htmlFor="Line1Qty" className="sr-only"> Quantity </label>
-                <button type="button"  onClick={(e) => {
+                <button type="button"  disabled={p.variationOptions.length === 0} onClick={(e) => {
     
     e.stopPropagation();
    
@@ -166,7 +167,7 @@ console.log(skus);
         
       };
 
-      
+     
 
       if(updated[index].saleItemQuantity == sku.stockQuantity ?? product.productStock) {
         window.alert("Max stock reached!");
