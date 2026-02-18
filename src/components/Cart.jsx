@@ -89,7 +89,7 @@ console.log(skus);
         <div className="p-3">
             
           <li className="flex items-center gap-4">
-            <img src={`https://${bucket}.s3.${region}.amazonaws.com/${p.productImage}`} alt="" className="size-16 rounded-sm object-cover" />
+            <img src={`https://${bucket}.s3.${region}.amazonaws.com/${product.productImage}`} alt="" className="size-16 rounded-sm object-cover" />
 
           
             <div >
