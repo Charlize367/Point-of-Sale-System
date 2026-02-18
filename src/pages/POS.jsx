@@ -305,16 +305,14 @@ console.log(product);
 
         const item = selectedItems[itemId];
         const currentSelections = item.variationOptions || [];
-        if (currentSelections.length === 0) {
-            const hasStockForOption = skus.some(sku => 
+        const hasStockForOption = skus.some(sku => 
                 sku.product.productId === product.productId &&
                 sku.stockQuantity > 0 &&
                 sku.variationOptions.some((skuOpt) =>
                     skuOpt.variationOptionId === variationOption.variationOptionId
             ));
 
-            return !hasStockForOption;
-        } 
+            if (!hasStockForOption) return true;
         const hypotheticalCombo = [...currentSelections.filter(opt =>  opt.variationId !== variationId), newOption];
         
        
