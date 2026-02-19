@@ -61,7 +61,7 @@ console.log(selectedItems);
     const item = { ...updatedItems[itemId] };
 
       
-      const updatedOptions = [...item.variationOptions];
+      const updatedOptions = [...item?.variationOptions];
 
       
       const index = updatedOptions.findIndex(vo => vo.variationId === variation.variationId);
@@ -86,23 +86,32 @@ console.log(selectedItems);
         });
       }
 
-     const updatedItem = { ...item, variationOptions: updatedOptions };
+     const updatedItem = { ...item, variationOptions: updatedOptions, saleItemQuantity: item.saleItemQuantity || 1  };
     updatedItems[itemId] = updatedItem;
 
       const existingIndex = updatedItems.findIndex(
-        (i, idx) => 
-        idx !== itemId &&
-        i.productId === updatedItem.productId &&
-        JSON.stringify(i.variationOptions) === JSON.stringify(updatedItem.variationOptions)
-      );
+        (i, idx) => {
+        if (idx === itemId || i.productId !== updatedItem.productId) return false;
+
+        if (i.variationOptions.length !== updatedItem.variationOptions.length) return false;
+
+        return i.variationOptions.every(opt =>
+            updatedItem.variationOptions.some(opt2 => 
+                opt.variationId === opt2.variationId &&
+                opt.variationOptionId === opt2.variationOptionId
+            )
+        );
+        
+  });
 
       if (existingIndex >= 0) {
-        
-        updatedItems[existingIndex].saleItemQuantity = 1 + updatedItem.saleItemQuantity;
-        updatedItems.splice(itemId, 1);
-
-        
-      }
+  
+    
+    updatedItems[existingIndex].saleItemQuantity = 1 + updatedItem.saleItemQuantity;
+    
+    updatedItems.splice(itemId, 1);
+  } 
+    
 
       return updatedItems;
 
@@ -110,7 +119,7 @@ console.log(selectedItems);
     });
   
 };
-
+console.log(showModal);
 const getSku = async () => {
        try {
              const response = await axios.get(`${API_URL}/sku/all`, {
@@ -304,7 +313,7 @@ console.log(product);
 };
 
         const item = selectedItems[itemId];
-        const currentSelections = item.variationOptions || [];
+        const currentSelections = item?.variationOptions || [];
         const hasStockForOption = skus.some(sku => 
                 sku.product.productId === product.productId &&
                 sku.stockQuantity > 0 &&
@@ -395,43 +404,50 @@ console.log(product);
                     </div>
                     
                     <div className="flex-1 overflow-y-auto grid grid-cols-3 gap-5 m-5">
-                        {products.map(p => {
+                        {products.map((p, idx) => {
                         
+        
+        
                         const isDisabled = p.productStock === 0;
                         return(
                         <button className="cursor-pointer" onClick={() => {
                             if (isDisabled) return;
-
+                           
                             
                              const defaultSelectedIndex = selectedItems.findIndex(item => item.productId === p.productId && item.variationOptions.length == 0);
 
                             console.log(selectedItems[defaultSelectedIndex])
                             console.log(selectedItems);
-
+                            
                             if(defaultSelectedIndex >= 0) {
-
+                                
                                 setSelectedItems(prev =>
                                     prev.map((item, index) =>
                                         index === defaultSelectedIndex
                                         ? {...item, saleItemQuantity: item.saleItemQuantity + 1}
                                         : item
                                 ));
+                                openModal(defaultSelectedIndex, p.productId);
+
+                                
 
                                
                             } else {
-                                setSelectedItems(prev => [
-                                ...prev,
-                                {
+                                setSelectedItems(prev => {
+                                    const newItem = {
                                     productId: p.productId,
                                     saleItemQuantity: 1,
                                     variationOptions: []
-                                }
-                            ]);
+                                    }
+                                const updated = [...prev, newItem];
+                            openModal(updated.length - 1, p.productId);
+                            return updated;
+                            });
+
+                            
                         }
 
-                           
-
-
+                        
                         }}>
                         <div className="relative overflow-hidden rounded-4xl shadow-sm transition hover:shadow-lg bg-white h-75 
                 active:bg-gradient-to-t active:from-black/90 active:to-black/40 ">
@@ -472,7 +488,7 @@ console.log(product);
                 </div>
                 <div className="h-screen rounded bg-white col-span-1 border-l border-gray-300 shadow-sm">
                     <h1 className="text-2xl font-bold m-5">Transaction Details</h1>
-                    <Cart ref={cartRef}  itemId={itemId} selected={selectedItems} setSelectedItems={setSelectedItems} checkoutItems={checkoutItems} products={products} openModal={openModal} skus={skus} />
+                    <Cart ref={cartRef}  itemId={itemId} selected={selectedItems} setSelectedItems={setSelectedItems} checkoutItems={checkoutItems} products={products}  skus={skus} openModal={openModal} showModal={showModal} closeModal={closeModal}/>
                 </div>
             </div>
         </div>

@@ -1,8 +1,31 @@
 import React from 'react'
+import { useState } from 'react'
 import { useAuth } from '../auth/AuthContext.jsx'
+import LogoutConfirm from './LogoutConfirm.jsx';
 
 const Header = ({ setSearchTerm, searchTerm, handleSearch }) => {
     const { logout } = useAuth();
+     const [confirmDeletePopup, setConfirmDeletePopup] = useState(false)
+
+
+  const handleDeletePopup = (e) => {
+    e.preventDefault();
+    setConfirmDeletePopup(true);
+  }
+
+  const handleLogout = async() => {
+    logout();
+    if(logout) {
+    localStorage.setItem("showLogoutPopup", "true");
+
+    }
+  }
+
+  const closeDeletePopup = (e) => {
+    e.preventDefault();
+    setConfirmDeletePopup(false);
+  }
+  
   return (
     
 
@@ -51,9 +74,11 @@ const Header = ({ setSearchTerm, searchTerm, handleSearch }) => {
      
     </div>
 
-   
+   {confirmDeletePopup && (
+    <LogoutConfirm onLogoutClick={handleLogout} onClose={closeDeletePopup} />
+  )}
      <div className="text-md">
-        <button onClick={logout}>Logout</button>
+        <button className="bg-gray-700 rounded-lg p-2 w-20 text-white" onClick={handleDeletePopup}>Logout</button>
       </div>
   </div>
 </nav>

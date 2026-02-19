@@ -1,7 +1,7 @@
 
 import React, { forwardRef } from 'react';
 
-const Cart = forwardRef(({ itemId, selected, setSelectedItems, checkoutItems, products, openModal, skus }, ref) => {
+const Cart = forwardRef(({ itemId, selected, setSelectedItems, checkoutItems, products, openModal, showModal, closeModal ,skus }, ref) => {
     const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
     const bucket = import.meta.env.VITE_S3_BUCKET;
     const region = import.meta.env.VITE_AWS_REGION;
@@ -80,13 +80,16 @@ const item = selected.map(item => console.log(item.variationOptions));
             {selected.map((p, index) => {
               
 
+      
+        
+              
             
             
         const product = products.find(pr => pr.productId === p.productId);
             
        console.log(product);
         return(
-        <div className="hover:bg-gray-200 active:bg-gray-300 w-full" onClick={() => openModal(index, p.productId)}>
+        <div className="hover:bg-gray-200 active:bg-gray-300 w-full" >
         <div className="p-3">
             
           <li className="flex items-center gap-4">
@@ -129,9 +132,9 @@ const item = selected.map(item => console.log(item.variationOptions));
                 <div>
               <dt className="inline">Variation:</dt>
       <dd className="inline">
-        { p.variationOptions.length > 0 && p.variationOptions
-            ? p.variationOptions.map(vo => vo.variationOptionName)
-            .join(", ") : "None"}
+        {p.variationOptions.length > 0
+  ? p.variationOptions.map(vo => vo.variationOptionName).join(", ")
+  : "None"}
         </dd>
         </div>
         </dl>
