@@ -78,7 +78,7 @@ const Header = ({ setSearchTerm, searchTerm, handleSearch }) => {
     <LogoutConfirm onLogoutClick={handleLogout} onClose={closeDeletePopup} />
   )}
      <div className="text-md">
-        <button className="bg-gray-700 rounded-lg p-2 w-20 text-white" onClick={handleDeletePopup}>Logout</button>
+        <button className="bg-gray-700 rounded-lg p-2 w-20 cursor-pointer text-white" onClick={handleDeletePopup}>Logout</button>
       </div>
   </div>
 </nav>
